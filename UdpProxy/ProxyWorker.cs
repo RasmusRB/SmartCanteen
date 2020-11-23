@@ -23,12 +23,12 @@ namespace UdpProxy
         {
             while (true)
             {
-                Kunder obj = ReadUDPPacket();
+                Customers obj = ReadUDPPacket();
                 SendToRest(obj);
             }
         }
 
-        public Kunder ReadUDPPacket()
+        public Customers ReadUDPPacket()
         {
             // read udp
             IPEndPoint remotEndPoint = new IPEndPoint(IPAddress.Any, 0);
@@ -36,10 +36,10 @@ namespace UdpProxy
 
             string jsonStr = Encoding.UTF8.GetString(buffer);
 
-            return JsonConvert.DeserializeObject<Kunder>(jsonStr);
+            return JsonConvert.DeserializeObject<Customers>(jsonStr);
         }
 
-        public async void SendToRest(Kunder obj)
+        public async void SendToRest(Customers obj)
         {
             using (HttpClient client = new HttpClient())
             {

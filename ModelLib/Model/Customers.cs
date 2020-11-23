@@ -4,17 +4,17 @@ using System.Text;
 
 namespace ModelLib.Model
 {
-    public class Kunder
+    public class Customers
     {
         private int _counter;
         private DateTime _dateTime;
 
-        public Kunder()
+        public Customers()
         {
 
         }
 
-        public Kunder(int counter, DateTime dateTime)
+        public Customers(int counter, DateTime dateTime)
         {
             _counter = counter;
             _dateTime = dateTime;
