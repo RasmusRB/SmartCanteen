@@ -19,7 +19,7 @@ namespace UdpProxy
 
         }
 
-        internal void Start()
+        internal async void Start()
         {
             while (true)
             {
