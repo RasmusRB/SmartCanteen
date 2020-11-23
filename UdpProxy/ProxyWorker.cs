@@ -23,8 +23,8 @@ namespace UdpProxy
         {
             while (true)
             {
-                // Kunder obj = ReadUDPPacket();
-                // SendToRest(obj);
+                Kunder obj = ReadUDPPacket();
+                SendToRest(obj);
             }
         }
 
