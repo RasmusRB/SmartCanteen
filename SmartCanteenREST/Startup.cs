@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace SmartCanteenREST
 {
@@ -24,6 +25,15 @@ namespace SmartCanteenREST
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SmartCanteen API", Version = "v1.0" });
+            });
             services.AddControllers();
         }
 
@@ -35,8 +45,10 @@ namespace SmartCanteenREST
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartCanteen API v1.0"));
             app.UseRouting();
-
+            app.UseCors("AllowAnyOrigin");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
