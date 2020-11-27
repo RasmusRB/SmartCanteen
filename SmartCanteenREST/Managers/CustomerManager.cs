@@ -13,8 +13,12 @@ namespace SmartCanteenREST.Managers
         private const string GET_ALL = "Select * from Customer";
         private const string CREATE = "Insert into Customer ( Counter, Customer_date ) values ( @Counter, @Customer_date )";
 
+        /*
+         * Only GET & POST implemented as we do not wish to
+         * DELETE or UPDATE customer data received from sensor
+         */
 
-        // GETS all customer Data stored in DB
+        // GETS all customer data
         public IList<Customers> GetCustomerData()
         {
             List<Customers> customerData = new List<Customers>();
@@ -36,6 +40,7 @@ namespace SmartCanteenREST.Managers
             return customerData;
         }
 
+        // Creates customer data
         public bool CreateCustomerData(Customers customer)
         {
             bool created = false;
@@ -57,6 +62,7 @@ namespace SmartCanteenREST.Managers
             return created;
         }
 
+        // Reads customer
         private Customers ReadNextCustomer(SqlDataReader reader)
         {
             Customers customer = new Customers();
