@@ -8,7 +8,7 @@ namespace ModelLib.Model
     {
         private string _location;
         private double _temperature;
-        private string _weatherProg;
+        private bool _rain;
         private DateTime _dateTime;
 
         public Weather()
@@ -16,18 +16,12 @@ namespace ModelLib.Model
 
         }
 
-        public Weather(string location, double temperature, string weatherProg, DateTime dateTime)
+        public Weather(string location, double temperature, bool rain, DateTime dateTime)
         {
             _location = location;
             _temperature = temperature;
-            _weatherProg = weatherProg;
+            _rain = rain;
             _dateTime = dateTime;
-        }
-
-        public DateTime DateTime
-        {
-            get => _dateTime;
-            set => _dateTime = value;
         }
 
         public string Location
@@ -42,15 +36,21 @@ namespace ModelLib.Model
             set => _temperature = value;
         }
 
-        public string WeatherProg
+        public bool Rain
         {
-            get => _weatherProg;
-            set => _weatherProg = value;
+            get => _rain;
+            set => _rain = value;
+        }
+
+        public DateTime DateTime
+        {
+            get => _dateTime;
+            set => _dateTime = value;
         }
 
         public override string ToString()
         {
-            return $"{nameof(_location)}: {_location}, {nameof(_temperature)}: {_temperature}, {nameof(_weatherProg)}: {_weatherProg}, {nameof(_dateTime)}: {_dateTime}";
+            return $"{nameof(_location)}: {_location}, {nameof(_temperature)}: {_temperature}, {nameof(_rain)}: {_rain}, {nameof(_dateTime)}: {_dateTime}";
         }
     }
 }
