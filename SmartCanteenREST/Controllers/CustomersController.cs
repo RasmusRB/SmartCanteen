@@ -30,11 +30,12 @@ namespace SmartCanteenREST.Controllers
         //    return "value";
         //}
 
-        //// POST api/<CustomersController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        // POST api/<CustomersController>
+        [HttpPost]
+        public bool Post([FromBody] Customers value)
+        {
+            return mng.CreateCustomerData(value);
+        }
 
         //// PUT api/<CustomersController>/5
         //[HttpPut("{id}")]

@@ -9,8 +9,12 @@ namespace SmartCanteenREST.Managers
 {
     public class CustomerManager
     {
-        private const string connString = @"Data Source=smartcanteen-db-erver.database.windows.net;Initial Catalog=SmartCanteen-DB;User ID=smadmin;Password=Secret1234;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private const string connString = "Data Source=smartcanteen-db-erver.database.windows.net;Initial Catalog=SmartCanteen-DB;User ID=smadmin;Password=Secret1234;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private const string GET_ALL = "Select * from Customer";
+        private const string CREATE = "Insert into Customer ( Counter, Customer_date ) values ( @Counter, @Customer_date )";
 
+
+        // GETS all customer Data stored in DB
         public IList<Customers> GetCustomerData()
         {
             List<Customers> customerData = new List<Customers>();
@@ -19,7 +23,7 @@ namespace SmartCanteenREST.Managers
             {
                 conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand("Select * from Customer", conn))
+                using (SqlCommand cmd = new SqlCommand(GET_ALL, conn))
                 {
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -30,6 +34,27 @@ namespace SmartCanteenREST.Managers
             }
 
             return customerData;
+        }
+
+        public bool CreateCustomerData(Customers customer)
+        {
+            bool created = false;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(CREATE, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Counter", customer.Counter);
+                    cmd.Parameters.AddWithValue("@Customer_date", customer.DateTime);
+
+                    int rows = cmd.ExecuteNonQuery();
+                    created = rows == 1;
+                }
+            }
+
+            return created;
         }
 
         private Customers ReadNextCustomer(SqlDataReader reader)
