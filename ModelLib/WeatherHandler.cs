@@ -45,18 +45,16 @@ namespace ModelLib
         private static async Task<WeatherReport> MakeWeatherReport()
         {
             string response = "";
-            //using HttpClient client = new HttpClient();
-            //foreach (string uri in Uris)
-            //{
-            //    response = await client.GetStringAsync(uri);
-            //    if (!string.IsNullOrWhiteSpace(response))
-            //        break;
-            //}
+            using HttpClient client = new HttpClient();
+            foreach (string uri in Uris)
+            {
+                response = await client.GetStringAsync(uri);
+                if (!string.IsNullOrWhiteSpace(response))
+                    break;
+            }
 
-            //if (string.IsNullOrWhiteSpace(response))
-            //    return null;
-
-            response = TestData;
+            if (string.IsNullOrWhiteSpace(response))
+                return null;
 
             response = response.Replace("\"", "");
             response = response.Replace("}", "");
