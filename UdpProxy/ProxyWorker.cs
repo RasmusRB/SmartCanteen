@@ -10,8 +10,8 @@ namespace UdpProxy
 {
     internal class ProxyWorker
     {
-        private const string URI = ""; // TODO REST uri der skal postes til
-        private readonly UdpClient _client = new UdpClient(); // TODO port nr til at modtage UDP datagram
+        private const string URI = "http://localhost:63277/api/Customers"; // TODO REST uri der skal postes til
+        private readonly UdpClient _client = new UdpClient(7000); // TODO port nr til at modtage UDP datagram
         private byte[] _buffer;
 
         public ProxyWorker()
@@ -33,9 +33,9 @@ namespace UdpProxy
             IPEndPoint remotEndPoint = new IPEndPoint(IPAddress.Any, 0);
             _buffer = _client.Receive(ref remotEndPoint);
 
-            string jsonStr = Encoding.UTF8.GetString(_buffer);
+            string count = Encoding.UTF8.GetString(_buffer);
 
-            return JsonConvert.DeserializeObject<Customers>(jsonStr);
+            return new Customers(int.Parse(count), DateTime.Now);
         }
 
         public async void SendToRest(Customers obj)
