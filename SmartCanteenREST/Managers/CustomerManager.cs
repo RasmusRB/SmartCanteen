@@ -19,7 +19,7 @@ namespace SmartCanteenREST.Managers
          */
 
         // GETS all customer data
-        public IList<Customers> GetCustomerData()
+        public List<Customers> GetCustomerData()
         {
             List<Customers> customerData = new List<Customers>();
 

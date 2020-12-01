@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ModelLib;
 using ModelLib.Model;
+using SmartCanteenREST.Managers;
 
 namespace SmartCanteenREST.Controllers
 {
@@ -15,9 +16,30 @@ namespace SmartCanteenREST.Controllers
     {
         //GET: api/<WeatherController>
         [HttpGet]
-        public WeatherReport Get()
+        public Weather GetNow()
         {
-            return WeatherHandler.GetWeatherReport();
+            return WeatherHandler.GetWeatherNow();
+        }
+
+        //GET: api/<WeatherController>/saves
+        [HttpGet("saves")]
+        public IEnumerable<Weather> Get()
+        {
+            return WeatherManager.GetAll();
+        }
+
+        //POST: api/<WeatherController>/saves
+        [HttpPost("saves")]
+        public bool Post([FromBody] Weather weather)
+        {
+            return WeatherManager.Create(weather);
+        }
+
+        //POST: api/<WeatherController>/saves/add
+        [HttpPost("saves/add")]
+        public bool Post()
+        {
+            return WeatherManager.Create(WeatherHandler.GetWeatherNow());
         }
     }
 }
