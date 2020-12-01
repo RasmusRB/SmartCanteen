@@ -23,6 +23,13 @@ namespace SmartCanteenREST.Controllers
             return mng.GetProductInfo();
         }
 
+        [HttpGet]
+        [Route("{isHot}")]
+        public Products Get(bool isHot)
+        {
+            return mng.GetOrderByisHot(isHot);
+        }
+
         //// GET api/<ProductsController>/5
         //[HttpGet("{id}")]
         //public string Get(int id)

@@ -11,6 +11,8 @@ namespace SmartCanteenREST.Managers
     {
         private const string connString = "Data Source=smartcanteen-db-erver.database.windows.net;Initial Catalog=SmartCanteen-DB;User ID=smadmin;Password=Secret1234;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private const string GET_ALL = "Select * from Product";
+        private const string GET_isHot = "Select * from Product WHERE IsHot = @IsHot";
+
 
         /*
          * Only GET implemented as we do not wish to
@@ -38,6 +40,31 @@ namespace SmartCanteenREST.Managers
 
             return productInfo;
         }
+
+
+
+        public Products GetOrderByisHot(bool isHot)
+        {
+            Products products = new Products();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(GET_isHot, conn))
+                {
+                    cmd.Parameters.AddWithValue("@isHot", isHot);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        products = ReadNextProduct(reader);
+                    }
+                }
+            }
+            return products;
+        }
+
+
 
         // Reads the columns in the table
         private Products ReadNextProduct(SqlDataReader reader)
