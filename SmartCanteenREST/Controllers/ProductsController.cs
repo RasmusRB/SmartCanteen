@@ -26,9 +26,9 @@ namespace SmartCanteenREST.Controllers
         // GET: api/<ProductsController>
         [HttpGet]
         [Route("{isHot}")]
-        public IList<Products> GetIsHotList(bool isHot)
+        public IList<Products> GetByBool(bool isHot)
         {
-            return mng.GetProductsFromIsHot(isHot);
+            return mng.GetProductsFromBool(isHot);
         }
     }
 }

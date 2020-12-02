@@ -41,7 +41,7 @@ namespace SmartCanteenREST.Managers
         }
 
         //GETS product based on bool
-        public IList<Products> GetProductsFromIsHot(bool isHot)
+        public IList<Products> GetProductsFromBool(bool isHot)
         {
             List<Products> isHotList = new List<Products>();
 
