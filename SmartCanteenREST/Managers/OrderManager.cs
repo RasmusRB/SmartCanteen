@@ -43,9 +43,9 @@ namespace SmartCanteenREST.Managers
         }
 
         // GETS Order by specific date
-        public Orders GetOrderByDate(DateTime date)
+        public IList<Orders> GetOrderByDate(DateTime date)
         {
-            Orders order = new Orders();
+            List<Orders> listOfDates = new List<Orders>();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -57,12 +57,12 @@ namespace SmartCanteenREST.Managers
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        order = ReadNextOrder(reader);
+                        listOfDates.Add(ReadNextOrder(reader));
                     }
                 }
             }
 
-            return order;
+            return listOfDates;
         }
 
         // Reads the columns in the table

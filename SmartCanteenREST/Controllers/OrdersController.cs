@@ -25,9 +25,10 @@ namespace SmartCanteenREST.Controllers
 
         [HttpGet]
         [Route("{date}")]
-        public Orders GetByDate(DateTime date)
+        public IList<Orders> GetByDate(DateTime date)
         {
             return mng.GetOrderByDate(date);
         }
+
     }
 }
