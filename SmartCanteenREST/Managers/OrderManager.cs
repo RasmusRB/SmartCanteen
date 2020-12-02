@@ -13,6 +13,12 @@ namespace SmartCanteenREST.Managers
         private const string GET_ALL = "Select * from Orders";
         private const string GET_BY_DATE = "Select * from Orders WHERE Order_date = @Date";
 
+        /*
+         * Only GETS implemented as we do not wish to
+         * POST, DELETE or UPDATE product data
+         */
+
+        // GETS all orders
         public IList<Orders> GetAllOrders()
         {
             List<Orders> allOrders = new List<Orders>();
@@ -36,6 +42,7 @@ namespace SmartCanteenREST.Managers
             return allOrders;
         }
 
+        // GETS Order by specific date
         public Orders GetOrderByDate(DateTime date)
         {
             Orders order = new Orders();
@@ -48,7 +55,7 @@ namespace SmartCanteenREST.Managers
                 {
                     cmd.Parameters.AddWithValue("@Date", date);
                     SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         order = ReadNextOrder(reader);
                     }
@@ -58,6 +65,7 @@ namespace SmartCanteenREST.Managers
             return order;
         }
 
+        // Reads the columns in the table
         private Orders ReadNextOrder(SqlDataReader reader)
         {
             Orders order = new Orders();
