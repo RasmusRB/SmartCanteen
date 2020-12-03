@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ModelLib;
@@ -40,6 +41,31 @@ namespace SmartCanteenREST.Controllers
         public bool Post()
         {
             return WeatherManager.Create(WeatherHandler.GetWeatherNow());
+        }
+
+
+        public WeatherController()
+        {
+            _timer.Elapsed += SaveWeather; // Event to do your tasks.
+            ResetTimer();
+        }
+
+        private readonly Timer _timer = new Timer();
+
+        private void ResetTimer()
+        {
+            _timer.Stop();
+            //Gets date for tomorrow at 12:00
+            DateTime dateTime = DateTime.Now.AddDays(1).Date.AddHours(12);
+            //DateTime dateTime = DateTime.Now.AddSeconds(20); //Testing datetime
+            _timer.Interval = dateTime.Subtract(DateTime.Now).TotalMilliseconds;
+            _timer.Start();
+        }
+
+        private void SaveWeather(object sender, ElapsedEventArgs e)
+        {
+            Post();
+            ResetTimer();
         }
     }
 }
