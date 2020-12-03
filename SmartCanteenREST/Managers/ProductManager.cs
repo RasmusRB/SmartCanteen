@@ -12,13 +12,14 @@ namespace SmartCanteenREST.Managers
         private const string connString = "Data Source=smartcanteen-db-erver.database.windows.net;Initial Catalog=SmartCanteen-DB;User ID=smadmin;Password=Secret1234;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private const string GET_ALL = "Select * from Product";
         private const string GET_IS_HOT = "Select * from Product WHERE isHot = @isHot";
+        private const string GET_ALL_BY_FK = "Select* from Product Where FK_Category_Id = @id";
 
         /*
          * Only GET implemented as we do not wish to
          * POST, DELETE or UPDATE product data
          */
 
-        // GET all product info
+        // GETS all product info
         public IList<Products> GetProductInfo()
         {
             List<Products> productInfo = new List<Products>();
@@ -40,7 +41,30 @@ namespace SmartCanteenREST.Managers
             return productInfo;
         }
 
-        //GETS product based on bool
+        // GETS product based on category FK (Fx. Soup, snack etc.)
+        public IList<Products> GetProductById(int id)
+        {
+            List<Products> fkList = new List<Products>();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(GET_ALL_BY_FK, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        fkList.Add(ReadNextProduct(reader));
+                    }
+                }
+            }
+
+            return fkList;
+        }
+
+        // GETS product based on bool
         public IList<Products> GetProductsFromBool(bool isHot)
         {
             List<Products> isHotList = new List<Products>();
