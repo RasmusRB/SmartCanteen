@@ -29,7 +29,6 @@ namespace SmartCanteenREST
             {
                 options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SmartCanteen API", Version = "v1.0" });
