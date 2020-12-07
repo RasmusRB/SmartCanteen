@@ -114,10 +114,8 @@ namespace SmartCanteenREST.Managers
         }
 
         // CREATES a new product
-        public bool CreateProduct(Products product)
+        public void CreateProduct(Products product)
         {
-            bool created = false;
-
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -130,12 +128,9 @@ namespace SmartCanteenREST.Managers
                     cmd.Parameters.AddWithValue("@Protein", product.Protein);
                     cmd.Parameters.AddWithValue("@IsHot", product.IsHot);
 
-                    int rows = cmd.ExecuteNonQuery();
-                    created = rows == 1;
+                    cmd.ExecuteNonQuery();
                 }
             }
-
-            return created;
         }
 
         public Products DeleteProduct(int id)

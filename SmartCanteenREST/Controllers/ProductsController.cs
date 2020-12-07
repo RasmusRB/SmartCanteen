@@ -42,9 +42,9 @@ namespace SmartCanteenREST.Controllers
 
         // POST
         [HttpPost]
-        public bool Post([FromBody] Products value)
+        public void Post([FromBody] Products value)
         {
-            return mng.CreateProduct(value);
+            mng.CreateProduct(value);
         }
 
         // DELETE
