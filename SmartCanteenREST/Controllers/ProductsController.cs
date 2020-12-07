@@ -29,7 +29,7 @@ namespace SmartCanteenREST.Controllers
         [Route("{category}/{id}")]
         public IList<Products> GetByKey(int id)
         {
-            return mng.GetProductById(id);
+            return mng.GetProductByCategory(id);
         }
 
         // GET: api/<ProductsController>
@@ -38,6 +38,20 @@ namespace SmartCanteenREST.Controllers
         public IList<Products> GetByBool(bool isHot)
         {
             return mng.GetProductsFromBool(isHot);
+        }
+
+        // POST
+        [HttpPost]
+        public bool Post([FromBody] Products value)
+        {
+            return mng.CreateProduct(value);
+        }
+
+        // DELETE
+        [HttpDelete]
+        public Products Delete(int id)
+        {
+            return mng.DeleteProduct(id);
         }
     }
 }

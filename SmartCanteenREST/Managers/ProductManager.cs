@@ -13,6 +13,9 @@ namespace SmartCanteenREST.Managers
         private const string GET_ALL = "Select * from Product";
         private const string GET_IS_HOT = "Select * from Product WHERE isHot = @isHot";
         private const string GET_ALL_BY_FK = "Select* from Product Where FK_Category_Id = @id";
+        private const string GET_BY_ID = "Select * from Product Where Product_Id = @id";
+        private const string CREATE_PROD =
+            "Insert into Product (FK_Category_Id, Name, Price, Protein, IsHot) VALUES (@CategoryID, @Name, @Price, @Protein, @IsHot)";
 
         /*
          * Only GET implemented as we do not wish to
@@ -42,7 +45,7 @@ namespace SmartCanteenREST.Managers
         }
 
         // GETS product based on category FK (Fx. Soup, snack etc.)
-        public IList<Products> GetProductById(int id)
+        public IList<Products> GetProductByCategory(int id)
         {
             List<Products> fkList = new List<Products>();
 
@@ -62,6 +65,29 @@ namespace SmartCanteenREST.Managers
             }
 
             return fkList;
+        }
+
+        public Products GetById(int id)
+        {
+            Products product = new Products();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(GET_BY_ID, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        product = ReadNextProduct(reader);
+                    }
+                }
+            }
+
+            return product;
+
         }
 
         // GETS product based on bool
@@ -85,6 +111,49 @@ namespace SmartCanteenREST.Managers
             }
 
             return isHotList;
+        }
+
+        // CREATES a new product
+        public bool CreateProduct(Products product)
+        {
+            bool created = false;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(CREATE_PROD, conn))
+                {
+                    cmd.Parameters.AddWithValue("@CategoryID", product.FkId);
+                    cmd.Parameters.AddWithValue("@Name", product.Name);
+                    cmd.Parameters.AddWithValue("@Price", product.Price);
+                    cmd.Parameters.AddWithValue("@Protein", product.Protein);
+                    cmd.Parameters.AddWithValue("@IsHot", product.IsHot);
+
+                    int rows = cmd.ExecuteNonQuery();
+                    created = rows == 1;
+                }
+            }
+
+            return created;
+        }
+
+        public Products DeleteProduct(int id)
+        {
+            Products product = GetById(id);
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(GET_BY_ID, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return product;
         }
 
         // Reads the columns in the table
