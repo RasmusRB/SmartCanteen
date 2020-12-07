@@ -14,8 +14,8 @@ namespace SmartCanteenREST.Managers
         private const string GET_IS_HOT = "Select * from Product WHERE isHot = @isHot";
         private const string GET_ALL_BY_FK = "Select* from Product Where FK_Category_Id = @id";
         private const string GET_BY_ID = "Select * from Product Where Product_Id = @id";
-        private const string CREATE_PROD =
-            "Insert into Product (FK_Category_Id, Name, Price, Protein, IsHot) VALUES (@CategoryID, @Name, @Price, @Protein, @IsHot)";
+        private const string CREATE_PROD = "Insert into Product (FK_Category_Id, Name, Price, Protein, IsHot) VALUES (@CategoryID, @Name, @Price, @Protein, @IsHot)";
+        private const string DEL_BY_ID = "DELETE from Product WHERE Product_Id = @id";
 
         /*
          * Only GET implemented as we do not wish to
@@ -146,7 +146,7 @@ namespace SmartCanteenREST.Managers
             {
                 conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand(GET_BY_ID, conn))
+                using (SqlCommand cmd = new SqlCommand(DEL_BY_ID, conn))
                 {
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
