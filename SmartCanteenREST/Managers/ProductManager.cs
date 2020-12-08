@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using ModelLib.Model;
 
 namespace SmartCanteenREST.Managers
@@ -16,6 +17,9 @@ namespace SmartCanteenREST.Managers
         private const string GET_BY_ID = "Select * from Product Where Product_Id = @id";
         private const string CREATE_PROD = "Insert into Product (FK_Category_Id, Name, Price, Protein, IsHot) VALUES (@CategoryID, @Name, @Price, @Protein, @IsHot)";
         private const string DEL_BY_ID = "DELETE from Product WHERE Product_Id = @id";
+        private const string GET_SPECIFIC = "select Product.Product_Id, SUM(Sales.Quantity) as 'Quantity', Product.Name, Product.Price as 'Per product', SUM(Product.Price * Quantity) as 'Total price', Orders.Order_date from Product inner join Sales on Product.Product_Id = Sales.FK_product_Id inner join Orders on Sales.FK_order_Id = Orders.Order_Id where Product.FK_Category_Id >=2 and Orders.Order_date = '2020/11/30' group by Product.Product_Id, Product.Name, Product.Price, Orders.Order_date order by COUNT(Sales.FK_product_Id)";
+        // Note for future => Would be better to make DB view to select specific info instead of a humongous query string
+
 
         /*
          * Only GET implemented as we do not wish to
@@ -42,6 +46,42 @@ namespace SmartCanteenREST.Managers
             }
 
             return productInfo;
+        }
+
+        // GETS specific item from specific date
+        public IList<SalesOnSpecificDay> GetBySpecific()
+        {
+            List<SalesOnSpecificDay> specificInfo = new List<SalesOnSpecificDay>();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(GET_SPECIFIC, conn))
+                {
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        specificInfo.Add(ReadSpecificSales(reader));
+                    }
+                }
+            }
+
+            return specificInfo;
+        }
+
+        private SalesOnSpecificDay ReadSpecificSales(SqlDataReader reader)
+        {
+            SalesOnSpecificDay sale = new SalesOnSpecificDay();
+
+            sale.ProdId = reader.GetInt32(0);
+            sale.SalesQuantity = reader.GetInt32(1);
+            sale.ProdName = reader.GetString(2);
+            sale.ProdPrice = reader.GetInt32(3);
+            sale.TotalPrice = reader.GetInt32(4);
+            sale.OrderDate = reader.GetDateTime(5);
+
+            return sale;
         }
 
         // GETS product based on category FK (Fx. Soup, snack etc.)
