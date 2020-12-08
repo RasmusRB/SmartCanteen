@@ -25,9 +25,9 @@ namespace SmartCanteenREST.Controllers
 
         [HttpGet]
         [Route("saleOfSpecificDate")]
-        public IList<SalesOnSpecificDay> GetBySpecificDay()
+        public IList<SalesOnSpecificDay> GetBySpecificDay(DateTime date)
         {
-            return mng.GetBySpecific();
+            return mng.GetBySpecific(date);
         }
 
         // GET: api/<ProductsController>/<category>
