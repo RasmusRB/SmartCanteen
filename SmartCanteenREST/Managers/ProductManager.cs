@@ -18,7 +18,9 @@ namespace SmartCanteenREST.Managers
         private const string CREATE_PROD = "Insert into Product (FK_Category_Id, Name, Price, Protein, IsHot) VALUES (@CategoryID, @Name, @Price, @Protein, @IsHot)";
         private const string DEL_BY_ID = "DELETE from Product WHERE Product_Id = @id";
         // Get food from date
-        private const string GET_SPECIFIC = "select Product.Product_Id, SUM(Sales.Quantity) as 'Quantity', Product.Name, Product.Price as 'Per product', SUM(Product.Price * Quantity) as 'Total price', Orders.Order_date from Product inner join Sales on Product.Product_Id = Sales.FK_product_Id inner join Orders on Sales.FK_order_Id = Orders.Order_Id where Product.FK_Category_Id >=2 and Orders.Order_date = @date group by Product.Product_Id, Product.Name, Product.Price, Orders.Order_date order by COUNT(Sales.FK_product_Id)";
+        private const string GET_SPECIFIC_FOOD = "select Product.Product_Id, SUM(Sales.Quantity) as 'Quantity', Product.Name, Product.Price as 'Per product', SUM(Product.Price * Quantity) as 'Total price', Orders.Order_date from Product inner join Sales on Product.Product_Id = Sales.FK_product_Id inner join Orders on Sales.FK_order_Id = Orders.Order_Id where Product.FK_Category_Id >=2 and Orders.Order_date = @date group by Product.Product_Id, Product.Name, Product.Price, Orders.Order_date order by COUNT(Sales.FK_product_Id)";
+        // Get drink from date
+        private const string GET_SPECIFIC_DRINK = "select Product.Product_Id, SUM(Sales.Quantity) as 'Quantity', Product.Name, Product.Price as 'Per product', SUM(Product.Price * Quantity) as 'Total price', Orders.Order_date from  product inner join Sales on Product.Product_Id = Sales.FK_product_Id inner join Orders on Sales.FK_order_Id = orders.Order_Id where Product.FK_Category_Id = 1 and Orders.Order_date = @date group by Product.Product_Id, Product.Name, Product.Price, Orders.Order_date order by COUNT(Sales.FK_product_Id)";
         // Note for future => Would be better to make DB view to select specific info instead of a humongous query string
 
 
@@ -49,8 +51,9 @@ namespace SmartCanteenREST.Managers
             return productInfo;
         }
 
+        // FOOD
         // GETS specific item from specific date
-        public IList<SalesOnSpecificDay> GetBySpecific(DateTime date)
+        public IList<SalesOnSpecificDay> GetBySpecificFood(DateTime date)
         {
             List<SalesOnSpecificDay> specificInfo = new List<SalesOnSpecificDay>();
 
@@ -58,7 +61,31 @@ namespace SmartCanteenREST.Managers
             {
                 conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand(GET_SPECIFIC, conn))
+                using (SqlCommand cmd = new SqlCommand(GET_SPECIFIC_FOOD, conn))
+                {
+                    cmd.Parameters.AddWithValue("@date", date);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        specificInfo.Add(ReadSpecificSales(reader));
+                    }
+                }
+            }
+
+            return specificInfo;
+        }
+
+        // DRINK
+        // GETS specific item from specific date
+        public IList<SalesOnSpecificDay> GetBySpecificDrink(DateTime date)
+        {
+            List<SalesOnSpecificDay> specificInfo = new List<SalesOnSpecificDay>();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(GET_SPECIFIC_DRINK, conn))
                 {
                     cmd.Parameters.AddWithValue("@date", date);
                     SqlDataReader reader = cmd.ExecuteReader();
