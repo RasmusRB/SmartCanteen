@@ -23,6 +23,20 @@ namespace SmartCanteenREST.Controllers
             return mng.GetProductInfo();
         }
 
+        [HttpGet]
+        [Route("saleOfSpecificDateFood")]
+        public IList<SalesOnSpecificDay> GetBySpecificDayFood(DateTime date)
+        {
+            return mng.GetBySpecificFood(date);
+        }
+
+        [HttpGet]
+        [Route("saleOfSpecificDateDrink")]
+        public IList<SalesOnSpecificDay> GetBySpecificDayDrink(DateTime date)
+        {
+            return mng.GetBySpecificDrink(date);
+        }
+
         // GET: api/<ProductsController>/<category>
         // Select product based on Category FK
         [HttpGet]
