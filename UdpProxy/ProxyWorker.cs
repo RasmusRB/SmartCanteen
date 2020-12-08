@@ -10,8 +10,8 @@ namespace UdpProxy
 {
     internal class ProxyWorker
     {
-        private const string URI = "http://localhost:63277/api/Customers"; // TODO REST uri der skal postes til
-        private readonly UdpClient _client = new UdpClient(7000); // TODO port nr til at modtage UDP datagram
+        private const string URI = "http://localhost:63277/api/Customers";
+        private readonly UdpClient _client = new UdpClient(7000);
         private byte[] _buffer;
 
         public ProxyWorker()
