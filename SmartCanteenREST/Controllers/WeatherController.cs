@@ -55,8 +55,11 @@ namespace SmartCanteenREST.Controllers
         private void ResetTimer()
         {
             _timer.Stop();
-            //Gets date for tomorrow at 12:00
-            DateTime dateTime = DateTime.Now.AddDays(1).Date.AddHours(12);
+            //Gets todays datetime at 12:00
+            DateTime dateTime = DateTime.Now.Date.AddHours(12);
+            //Adds a day if we already passed 12:00
+            if (DateTime.Now.TimeOfDay > TimeSpan.FromHours(12))
+                dateTime = dateTime.AddDays(1);
             //DateTime dateTime = DateTime.Now.AddSeconds(20); //Testing datetime
             _timer.Interval = dateTime.Subtract(DateTime.Now).TotalMilliseconds;
             _timer.Start();
