@@ -35,7 +35,7 @@ namespace UdpProxy
 
             string count = Encoding.UTF8.GetString(_buffer);
 
-            return new Customers(int.Parse(count), DateTime.Now);
+            return new Customers(int.Parse(count), DateTime.Now.Date);
         }
 
         public async void SendToRest(Customers obj)

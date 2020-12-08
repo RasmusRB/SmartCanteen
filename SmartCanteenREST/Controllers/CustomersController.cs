@@ -23,12 +23,18 @@ namespace SmartCanteenREST.Controllers
             return mng.GetCustomerData();
         }
 
+        // GET: api/<CustomersController>/today
+        [HttpGet("today")]
+        public Customers GetToday()
+        {
+            return mng.GetCustomerDataForDay(DateTime.Now.Date) ?? new Customers(0, DateTime.Now.Date);
+        }
+
         // POST api/<CustomersController>
         [HttpPost]
         public bool Post([FromBody] Customers value)
         {
             return mng.CreateCustomerData(value);
         }
-
     }
 }

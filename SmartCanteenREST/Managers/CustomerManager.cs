@@ -10,8 +10,13 @@ namespace SmartCanteenREST.Managers
     public class CustomerManager
     {
         private const string connString = "Data Source=smartcanteen-db-erver.database.windows.net;Initial Catalog=SmartCanteen-DB;User ID=smadmin;Password=Secret1234;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        private const string GET_ALL = "Select * from Customer";
-        private const string CREATE = "Insert into Customer ( Counter, Customer_date ) values ( @Counter, @Customer_date )";
+        private const string GET_ALL = "SELECT * FROM Customer";
+        private const string GET_TODAY = "SELECT * FROM Customer WHERE Customer_date=@Customer_date";
+        private const string CREATE = "IF EXISTS(SELECT * FROM Customer WHERE Customer_date=@Customer_date)\nBEGIN\nUPDATE Customer SET Counter=@Counter WHERE Customer_date=@Customer_date\nEND\nELSE\nBEGIN\nINSERT INTO Customer VALUES(@Counter, @Customer_date)  \nEND";
+
+
+        //Old create query
+        //private const string CREATE = "Insert into Customer ( Counter, Customer_date ) values ( @Counter, @Customer_date )";
 
         /*
          * Only GET & POST implemented as we do not wish to
@@ -38,6 +43,21 @@ namespace SmartCanteenREST.Managers
             }
 
             return customerData;
+        }
+
+        //GET todays customer data
+        public Customers GetCustomerDataForDay(DateTime dateTime)
+        {
+            using SqlConnection conn = new SqlConnection(connString);
+            conn.Open();
+
+            using SqlCommand cmd = new SqlCommand(GET_TODAY, conn);
+            cmd.Parameters.AddWithValue("@Customer_date", dateTime);
+            
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+                return ReadNextCustomer(reader);
+            return null;
         }
 
         // Creates customer data
