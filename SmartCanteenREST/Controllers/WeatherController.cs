@@ -47,7 +47,10 @@ namespace SmartCanteenREST.Controllers
         public WeatherController()
         {
             _timer.Elapsed += SaveWeather; // Event to do your tasks.
-            ResetTimer();
+
+            DateTime dateTime = DateTime.Now.AddMinutes(5);
+            _timer.Interval = dateTime.Subtract(DateTime.Now).TotalMilliseconds;
+            _timer.Start();
         }
 
         private readonly Timer _timer = new Timer();
@@ -57,7 +60,7 @@ namespace SmartCanteenREST.Controllers
             _timer.Stop();
 
             //Gets tomorrows datetime at 13:00
-            DateTime dateTime = DateTime.Now.Date.AddDays(1).AddHours(13);
+            DateTime dateTime = DateTime.Now.Date.AddDays(1).AddHours(12);
 
             //DateTime dateTime = DateTime.Now.AddMinutes(1); //Testing datetime
 
