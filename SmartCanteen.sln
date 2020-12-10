@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UdpProxy", "UdpProxy\UdpPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UITestHTML", "UITestHTML\UITestHTML.csproj", "{244FEDC2-7FC4-4786-950A-E6CDAF6681C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerTest", "ControllerTest\ControllerTest.csproj", "{25931640-5BE1-41FD-8C47-4FF270105AE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTest", "ControllerTest\ControllerTest.csproj", "{25931640-5BE1-41FD-8C47-4FF270105AE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{58788714-861F-4412-86B3-C980F7E9F5CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{244FEDC2-7FC4-4786-950A-E6CDAF6681C8} = {58788714-861F-4412-86B3-C980F7E9F5CC}
+		{25931640-5BE1-41FD-8C47-4FF270105AE1} = {58788714-861F-4412-86B3-C980F7E9F5CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DDBF200-FF30-49ED-9B90-32341A7729B7}

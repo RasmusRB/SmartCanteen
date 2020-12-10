@@ -24,14 +24,14 @@ namespace SmartCanteenREST.Controllers
         }
 
         [HttpGet]
-        [Route("saleOfSpecificDateFood")]
+        [Route("saleSpecificFoodDate/{date}")]
         public IList<SalesOnSpecificDay> GetBySpecificDayFood(DateTime date)
         {
             return mng.GetBySpecificFood(date);
         }
 
         [HttpGet]
-        [Route("saleOfSpecificDateDrink")]
+        [Route("saleSpecificDrinkDate/{date}")]
         public IList<SalesOnSpecificDay> GetBySpecificDayDrink(DateTime date)
         {
             return mng.GetBySpecificDrink(date);

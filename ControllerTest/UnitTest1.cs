@@ -23,7 +23,7 @@ namespace ControllerTest
         {
             List<Products> liste = new List<Products>(cntrl.Get());
 
-            Assert.AreEqual(25, liste.Count);
+            Assert.AreEqual(27, liste.Count);
         }
     }
 }
